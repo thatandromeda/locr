@@ -1,0 +1,7 @@
+README.md
+setup.cfg
+setup.py
+locr/locr.egg-info/PKG-INFO
+locr/locr.egg-info/SOURCES.txt
+locr/locr.egg-info/dependency_links.txt
+locr/locr.egg-info/top_level.txt
