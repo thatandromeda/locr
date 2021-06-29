@@ -297,7 +297,7 @@ class Fetcher(object):
         try:
             format = self.result['online_format']
         except KeyError:
-            raise ObjectNotOnline(f'{self.result['id']} does not have an online_format key')
+            raise ObjectNotOnline(f'{self.result["id"]} does not have an online_format key')
 
         if 'audio' in format:
             return self._get_text_from_audio()

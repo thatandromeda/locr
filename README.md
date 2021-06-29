@@ -8,7 +8,7 @@ It can take as input either a result item from a [JSON API response](https://lib
 or the URL of an item:
 
 ```
-from locr.fetcher import Fetcher
+from locr import Fetcher
 
 # From item or resource URL
 Fetcher.full_text_from_url('https://www.loc.gov/resource/mss85943.001811/')
