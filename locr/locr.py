@@ -251,6 +251,7 @@ class Fetcher(object):
             'tile.loc.gov': self._tile_handler,
             'lcweb2.loc.gov': self._lcweb2_handler
         }
+        self.handler_used = None
 
 
     def _tile_handler(self, image_url):
@@ -268,6 +269,7 @@ class Fetcher(object):
 
     def _single_url_full_text(self, image_url):
         server = urlparse(image_url).netloc
+        self.handler_used = self.server_to_handler[server](image_url)
         return self.server_to_handler[server](image_url).full_text()
 
 
@@ -281,6 +283,7 @@ class Fetcher(object):
 
 
     def _get_text_from_audio(self):
+        self.handler_used = StorageSearchResultToText
         text = StorageSearchResultToText(image_url).full_text()
         return text
 
