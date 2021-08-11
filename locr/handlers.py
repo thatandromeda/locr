@@ -135,7 +135,10 @@ class ResourceLinkToText(XmlParser, SearchResultToText):
             response = self._get_text(url)
 
             if self._is_valid(response):
-                text = self._parse_text(response)
+                if url.endswith('.txt'):
+                    text = response.text
+                else:
+                    text = self._parse_text(response)
                 break
 
         return text
