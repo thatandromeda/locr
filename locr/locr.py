@@ -3,8 +3,8 @@ from urllib.parse import urlparse, urlunparse
 
 import requests
 
-from constants import TIMEOUT
-from handlers import (IiifSearchResultToText, StorageSearchResultToText,
+from .constants import TIMEOUT
+from .handlers import (IiifSearchResultToText, StorageSearchResultToText,
                        LcwebSearchResultToText, ResourceLinkToText)
 
 # TODO do I want to fetch blogs? I've filtered them out of slurp, but a

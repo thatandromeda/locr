@@ -18,7 +18,7 @@ from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 import requests
 
-from constants import TIMEOUT
+from .constants import TIMEOUT
 
 
 class XmlParser(object):
