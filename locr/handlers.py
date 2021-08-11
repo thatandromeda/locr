@@ -101,10 +101,8 @@ class SearchResultToText(object):
     def full_text(self):
         text = None
         for image_url in self.result['image_url']:
-            print(f'trying {image_url}')
             image_path = self._extract_image_path(image_url)
             response = self._get_text(image_path)
-            import pdb; pdb.set_trace()
             if self._is_valid(response):
                 text = self._parse_text(response)
                 break

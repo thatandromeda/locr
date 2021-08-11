@@ -87,7 +87,6 @@ class Fetcher(object):
 
         for handler in self.handlers:
             if handler.valid_for(self.result):
-                print(f'handler {handler} valid')
                 text = handler(self.result).full_text()
 
             if text:
