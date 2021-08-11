@@ -11,6 +11,7 @@ instance method full_text(self, response):
   takes an http response
   returns full text (or None)
 """
+import os
 import re
 from time import sleep
 from urllib.parse import urlparse
@@ -159,6 +160,29 @@ class LcwebSearchResultToText(XmlParser, SearchResultToText):
         path = urlparse(url).path
         base_path = os.path.splitext(path)[0]   # Remove file extension.
         return f'{base_path}.xml'
+
+
+    def _request_url(self, image_path):
+        return f'{self.endpoint}{self._segment_path(image_path)}'
+
+
+class MemorySearchResultToText(SearchResultToText):
+    """Extract fulltext of items whose images are hosted on memory."""
+    endpoint = 'https://memory.loc.gov/'
+
+    @classmethod
+    def valid_for(cls, result):
+        return True  # I don't actually know what's hosted here
+
+
+    def _segment_path(self, url):
+        path = urlparse(url).path
+        base_path = os.path.splitext(path)[0]   # Remove file extension.
+        return f'{base_path}.txt'
+
+
+    def _parse_text(self, response):
+        return response and response.text
 
 
     def _request_url(self, image_path):

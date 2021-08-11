@@ -5,7 +5,8 @@ import requests
 
 from .constants import TIMEOUT
 from .handlers import (IiifSearchResultToText, StorageSearchResultToText,
-                       LcwebSearchResultToText, ResourceLinkToText)
+                       LcwebSearchResultToText, ResourceLinkToText,
+                       MemorySearchResultToText)
 
 # TODO do I want to fetch blogs? I've filtered them out of slurp, but a
 # general-purpose thing might need to catch it.
@@ -65,7 +66,8 @@ class Fetcher(object):
             ResourceLinkToText,  # this is easiest and should be first
             IiifSearchResultToText,
             StorageSearchResultToText,
-            LcwebSearchResultToText
+            LcwebSearchResultToText,
+            MemorySearchResultToText  # this has the least debugging and should be last
         ]
         self.handler_used = None
 
