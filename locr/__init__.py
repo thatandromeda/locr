@@ -1,3 +1,3 @@
-from .locr import (
-    Fetcher, UnknownIdentifier, UnknownHandler, ObjectNotOnline
-)
+from .locr import Fetcher
+
+from .exceptions import UnknownIdentifier, ObjectNotOnline

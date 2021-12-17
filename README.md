@@ -26,8 +26,6 @@ objects have online text available.
 Fetcher may raise the following exceptions:
 - `UnknownIdentifier`: when it cannot find an object identifier within an item
   image url, and therefore cannot construct a full text URL.
-- `UnknownHandler`: when it cannot infer a correct handler for retrieving full
-  text for a given item.
 - `ObjectNotOnline`: when the object does not have any online formats.
 
 If you encounter these exceptions, kindly file an issue or open a PR about the

@@ -4,6 +4,7 @@ from urllib.parse import urlparse, urlunparse
 import requests
 
 from .constants import TIMEOUT
+from .exceptions import ObjectNotOnline
 from .handlers import (IiifSearchResultToText, StorageSearchResultToText,
                        LcwebSearchResultToText, ResourceLinkToText,
                        MemorySearchResultToText)
@@ -13,17 +14,6 @@ from .handlers import (IiifSearchResultToText, StorageSearchResultToText,
 # TODO inheritance uncomfortably deep
 # TODO deal with responses like {url: {'full_text': 'blah'}}
 # TODO audio still not working; see e.g. http://www.loc.gov/item/afc1941016_afs05499a/
-
-class UnknownIdentifier(Exception):
-    pass
-
-
-class UnknownHandler(Exception):
-    pass
-
-
-class ObjectNotOnline(Exception):
-    pass
 
 
 class Fetcher(object):

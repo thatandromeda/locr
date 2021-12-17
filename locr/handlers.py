@@ -1,8 +1,10 @@
 """
 Handlers know where to retrieve, and how to parse, full text for Library of
 Congress items.
-locr.Fetcher.handlers lists all known handlers. Additional handlers should
+
+`locr.Fetcher.handlers` lists all known handlers. Additional handlers should
 be added there.
+
 handlers must implement the following public interface:
 class method valid_for(cls, result):
   takes a LoC API result
@@ -20,6 +22,7 @@ from bs4 import BeautifulSoup
 import requests
 
 from .constants import TIMEOUT
+from .exceptions import UnknownIdentifier
 
 
 class XmlParser(object):
