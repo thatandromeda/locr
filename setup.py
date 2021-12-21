@@ -12,7 +12,7 @@ requires = [
 
 setuptools.setup(
     name="locr",
-    version="0.3.0",
+    version="0.4.1",
     author="Andromeda Yelton",
     description="Tools for fetching OCRed text of Library of Congress items.",
     long_description=long_description,
