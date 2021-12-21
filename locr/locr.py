@@ -104,25 +104,19 @@ class Fetcher(object):
 
     def full_text(self):
         """
-        Initialize a handler that knows how to fetch fulltext for images hosted
-        on the given server, and delegate to its full_text method.
-
-        Returns None if text not found.
+        Find the item URL within the JSON representation of the item, and
+        delegate to full_text_from_url.
         """
 
         try:
             format = self.result['online_format']
         except KeyError:
-            raise ObjectNotOnline(f'{self.result["id"]} does not have an online_format key')
+            raise ObjectNotOnline(f'{self.result["id"]} does not have an online_format key.')
 
-        text = None
+        # This is liberal in what it accepts; people are supposed to have passed
+        # in just the item key of the API JSON, but if they passed in the entire
+        # JSON response, it will find the url within the item. It will raise an
+        # AttributeError if neither option works.
+        url = self.result.get('url') or self.result.get('item').get('url')
 
-        for handler in self.handlers:
-            if handler.valid_for(self.result):
-                text = handler(self.result).full_text()
-
-            if text:
-                self.handler_used = handler  # For help with debugging
-                break
-
-        return text
+        return self.full_text_from_url(url)
