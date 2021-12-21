@@ -27,6 +27,7 @@ Fetcher may raise the following exceptions:
 - `UnknownIdentifier`: when it cannot find an object identifier within an item
   image url, and therefore cannot construct a full text URL.
 - `ObjectNotOnline`: when the object does not have any online formats.
+- `AmbiguousText`: when multiple fulltext options are found.
 
 If you encounter these exceptions, kindly file an issue or open a PR about the
 newly discovered edge case. Thanks.

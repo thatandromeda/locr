@@ -1,13 +1,16 @@
 import os
+import re
+from time import sleep
 from urllib.parse import urlparse, urlunparse
 
+from bs4 import BeautifulSoup
 import requests
 
 from .constants import TIMEOUT
-from .exceptions import ObjectNotOnline
+from .exceptions import ObjectNotOnline, AmbiguousText
 from .handlers import (IiifSearchResultToText, StorageSearchResultToText,
                        LcwebSearchResultToText, ResourceLinkToText,
-                       MemorySearchResultToText)
+                       MemorySearchResultToText, XmlParser)
 
 # TODO do I want to fetch blogs? I've filtered them out of slurp, but a
 # general-purpose thing might need to catch it.
@@ -43,12 +46,49 @@ class Fetcher(object):
     @classmethod
     def full_text_from_url(cls, url):
         """Given a URL of an item at LOC, fetches the fulltext of that item."""
-        parsed_url = urlparse(url)
-        base_url = urlunparse(
-            (parsed_url.scheme, parsed_url.netloc, parsed_url.path, '', 'fo=json', '')
-        )
-        result = requests.get(base_url).json()['item']
-        return Fetcher(result).full_text()
+
+        response = requests.get(url)
+        sleep(0.3)  # rate limiting
+
+        soup = BeautifulSoup(response.text, 'html.parser')
+        download_options = soup.find_all(attrs={"data-file-download": re.compile('text', re.IGNORECASE)})
+
+        print(url)
+
+        if len(download_options) == 0:
+            print('nope')
+            return None
+        elif len(download_options) == 1:
+            return cls._parse_download(download_options[0])
+        else:
+            return cls._multiple_options_handler(download_options)
+
+
+    @classmethod
+    def _parse_download(cls, download_option):
+        download_url = download_option['value']
+        response = requests.get(download_url)
+
+        if download_url.endswith('xml'):
+            return XmlParser()._parse_text(response)
+        elif download_url.endswith('txt'):
+            return response.text
+        else:
+            print(f'Unknown {download_url}')
+            return None
+
+
+    @classmethod
+    def _multiple_options_handler(cls, download_options):
+        all_pages = [x for x in download_options if 'all pages' in x.text]
+        if len(all_pages) == 0:
+            print('nope')
+            return None
+        elif len(all_pages) == 1:
+            return cls._parse_download(all_pages[0])
+        else:
+            print('AmbiguousText')
+
 
     def __init__(self, result):
         self.result = result
