@@ -56,7 +56,6 @@ class Fetcher(object):
         print(url)
 
         if len(download_options) == 0:
-            print('nope')
             return None
         elif len(download_options) == 1:
             return cls._parse_download(download_options[0])
@@ -65,16 +64,24 @@ class Fetcher(object):
 
 
     @classmethod
+    def _parse_xml(cls, xml_response):
+        # Sometimes this doesn't handle utf-8 properly (e.g we get â\x80\x94
+        # instead of a hyphen). Not clear why -- requests and bs4 know they're
+        # looking at utf-8.
+        return ' '.join([
+            x.get_text().strip() for x in soup.find('body').find_all('p')
+        ])
+
+    @classmethod
     def _parse_download(cls, download_option):
         download_url = download_option['value']
         response = requests.get(download_url)
 
         if download_url.endswith('xml'):
-            return XmlParser()._parse_text(response)
+            return cls._parse_xml(response)
         elif download_url.endswith('txt'):
             return response.text
         else:
-            print(f'Unknown {download_url}')
             return None
 
 
