@@ -8,13 +8,9 @@ import requests
 
 from .constants import TIMEOUT
 from .exceptions import ObjectNotOnline, AmbiguousText
-from .handlers import (IiifSearchResultToText, StorageSearchResultToText,
-                       LcwebSearchResultToText, ResourceLinkToText,
-                       MemorySearchResultToText, XmlParser)
 
 # TODO do I want to fetch blogs? I've filtered them out of slurp, but a
 # general-purpose thing might need to catch it.
-# TODO inheritance uncomfortably deep
 # TODO deal with responses like {url: {'full_text': 'blah'}}
 # TODO audio still not working; see e.g. http://www.loc.gov/item/afc1941016_afs05499a/
 
@@ -99,14 +95,6 @@ class Fetcher(object):
 
     def __init__(self, result):
         self.result = result
-        self.handlers = [
-            ResourceLinkToText,  # this is easiest and should be first
-            IiifSearchResultToText,
-            StorageSearchResultToText,
-            LcwebSearchResultToText,
-            MemorySearchResultToText  # this has the least debugging and should be last
-        ]
-        self.handler_used = None
 
 
     def full_text(self):
