@@ -62,8 +62,9 @@ class Fetcher(object):
         # Sometimes this doesn't handle utf-8 properly (e.g we get â\x80\x94
         # instead of a hyphen). Not clear why -- requests and bs4 know they're
         # looking at utf-8.
+        soup = BeautifulSoup(xml_response.text, 'html.parser')
         return ' '.join([
-            x.get_text().strip() for x in soup.find('body').find_all('p')
+            x.get_text().replace('\n', '') for x in soup.find('body').find_all('p')
         ])
 
     @classmethod
