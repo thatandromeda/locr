@@ -1,3 +1,3 @@
 from .locr import Fetcher
 
-from .exceptions import UnknownIdentifier, AmbiguousText
+from .exceptions import ObjectNotOnline, AmbiguousText
