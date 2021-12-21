@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import requests
 
 from .constants import TIMEOUT
-from .exceptions import ObjectNotOnline, AmbiguousText
+from .exceptions import ObjectNotOnline, AmbiguousText, UnknownFormat
 
 # TODO do I want to fetch blogs? I've filtered them out of slurp, but a
 # general-purpose thing might need to catch it.
@@ -49,8 +49,6 @@ class Fetcher(object):
         soup = BeautifulSoup(response.text, 'html.parser')
         download_options = soup.find_all(attrs={"data-file-download": re.compile('text', re.IGNORECASE)})
 
-        print(url)
-
         if len(download_options) == 0:
             return None
         elif len(download_options) == 1:
@@ -78,19 +76,18 @@ class Fetcher(object):
         elif download_url.endswith('txt'):
             return response.text
         else:
-            return None
+            raise UnknownFormat
 
 
     @classmethod
     def _multiple_options_handler(cls, download_options):
         all_pages = [x for x in download_options if 'all pages' in x.text]
         if len(all_pages) == 0:
-            print('nope')
             return None
         elif len(all_pages) == 1:
             return cls._parse_download(all_pages[0])
         else:
-            print('AmbiguousText')
+            raise AmbiguousText
 
 
     def __init__(self, result):

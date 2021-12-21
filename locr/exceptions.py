@@ -1,3 +1,7 @@
+class UnknownFormat(Exception):
+    pass
+
+
 class ObjectNotOnline(Exception):
     pass
 

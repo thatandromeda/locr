@@ -26,6 +26,7 @@ objects have online text available.
 Fetcher may raise the following exceptions:
 - `ObjectNotOnline`: when the object does not have any online formats.
 - `AmbiguousText`: when multiple fulltext options are found.
+- `UnknownFormat`: when locr is not sure how to handle the fulltext link's filetype.
 
 If you encounter these exceptions, kindly file an issue or open a PR about the
 newly discovered edge case. Thanks.
